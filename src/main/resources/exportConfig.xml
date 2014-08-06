@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-config>
+	<!-- class: the bean class of your APP. totalCols:the total fields which will be exported. -->
+	<bean id="demo" class="com.mh.test.User" totalCols="4">
+		<titles ref="standardTitle">
+			<title seq="0" name="User Name"></title>
+			<title seq="1" name="Age"></title>
+			<title seq="2" name="Birthday"></title>
+			<title seq="3" name="Balance"></title>
+		</titles>
+		<fields>
+			<field seq="0" getterMethod="getUsername">
+				<format ref="standardText"></format>
+			</field>
+			<field seq="1" getterMethod="getAge">
+				<format ref="standardText"></format>
+			</field>
+			<field seq="2" getterMethod="getBirthday">
+				<format ref="standardDate"></format>
+			</field>
+			<field seq="3" getterMethod="getBalance">
+				<format ref="standardNumber">
+					<!--if do not define the 'ref' value, you can define the style here -->
+				</format>
+			</field>
+		</fields>
+	</bean>
+	<formats>
+		<format id="standardTitle">
+			<width>15</width>
+			<height>20</height>
+			<align>CENTRE</align>
+			<vertical>CENTRE</vertical>
+			<fontSize>9</fontSize>
+			<blod>true</blod>
+			<wrap>true</wrap>
+		</format>
+		<format id="standardText">
+			<align>LEFT</align>
+			<vertical>CENTRE</vertical>
+			<fontSize>8</fontSize>
+			<blod>false</blod>
+			<wrap>true</wrap>
+		</format>
+		<format id="standardFixLength">
+			<align>CENTRE</align>
+			<vertical>CENTRE</vertical>
+			<fontSize>8</fontSize>
+			<blod>false</blod>
+			<wrap>false</wrap>
+		</format>
+		<format id="standardDate">
+			<width>600</width>
+			<height>20</height>
+			<align>CENTRE</align>
+			<vertical>CENTRE</vertical>
+			<fontSize>8</fontSize>
+			<blod>false</blod>
+			<wrap>false</wrap>
+			<dateFormat>dd/MM/yyyy</dateFormat>
+		</format>
+		<format id="standardNumber">
+			<align>RIGHT</align>
+			<vertical>CENTRE</vertical>
+			<fontSize>8</fontSize>
+			<blod>false</blod>
+			<wrap>false</wrap>
+			<dataFormat>#,##0.00</dataFormat>
+		</format>
+	</formats>
+</export-config>
