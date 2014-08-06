@@ -37,7 +37,7 @@ public class Const {
 		public static final String NAME = "name";
 		public static final String GETTER_METHOD = "getterMethod";
 		public static final String REFERENCE = "ref";
-		public static final String CLASS_NAME = "class";
+		public static final String CLASS_NAME = "class";  
 	}
 
 }
