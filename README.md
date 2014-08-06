@@ -19,7 +19,7 @@ This tool depends on below jar file(you can also find inside pom.xml):
 	- org.apache.commons.lang3.jar       version : 3.1
 、、、
 #How to share local project to GitHub
-#goto the project folder 
+#goto the project folder
 git init
 git remote add origin https://github.com/jasonsuzhou/jxltool.git
 #add all files
