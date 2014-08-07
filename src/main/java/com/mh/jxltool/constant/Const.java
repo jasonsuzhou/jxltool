@@ -23,10 +23,13 @@ public class Const {
 		public static final String ALIGN = "align";
 		public static final String VERTICAL_ALIGN = "vertical";
 		public static final String FONT_SIZE = "fontSize";
+		public static final String FONT_NAME = "fontName";
+		public static final String FONT_COLOR = "fontColor";
 		public static final String BLOD = "blod";
 		public static final String WRAP = "wrap";
 		public static final String DATE_FORMAT = "dateFormat";
 		public static final String DATA_FORMAT = "dataFormat";
+		public static final String BACKGROUND_COLOR = "backColor";
 	}
 
 	public interface Attr {
@@ -38,6 +41,16 @@ public class Const {
 		public static final String GETTER_METHOD = "getterMethod";
 		public static final String REFERENCE = "ref";
 		public static final String CLASS_NAME = "class";  
+	}
+	
+	public interface ReturnType {
+		public static final String INT = "int";
+		public static final String INTEGER = "java.lang.Integer";
+		public static final String DOUBLE = "double";
+		public static final String DATE = "java.util.Date";
+		public static final String BIG_DECIMAL = "java.math.BigDecimal";
+		public static final String LONG = "long";
+		public static final String STRING = "java.lang.String";
 	}
 
 }

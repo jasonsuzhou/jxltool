@@ -11,7 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
+import com.mh.jxltool.bean.AbstractExportColumn;
 import com.mh.jxltool.bean.ExportBean;
+import com.mh.jxltool.bean.ExportField;
 import com.mh.jxltool.bean.ExportFormat;
 import com.mh.jxltool.bean.ExportTitle;
 import com.mh.jxltool.constant.Const;
@@ -66,9 +68,60 @@ public class ExportExcelConfig {
 
 	}
 
-	private static void initField(ExportBean bean, String fieldRefFormat, List<Element> lsEleField) {
-		// TODO Auto-generated method stub
-		
+	private static void initField(ExportBean bean, String fieldRefFormat, List<Element> lsEleField) throws Exception {
+		if (lsEleField != null && !lsEleField.isEmpty()) {
+			ExportField field = null;
+			String seq = null;
+			for (Element eleField : lsEleField) {
+				field = new ExportField();
+				seq = XMLUtil.getNodeAttribute(eleField, Const.Attr.SEQUENCE);
+				if (StringUtils.isNotBlank(seq)) {
+					int iseq = Integer.parseInt(seq);
+					field.setSeq(iseq);
+					field.setGetterMethod(XMLUtil.getNodeAttribute(eleField, Const.Attr.GETTER_METHOD));
+					chooseFieldFormat(fieldRefFormat, field, eleField);
+					bean.putExportField(iseq, field);
+				} else {
+					throw new Exception("Configuration Error::Attribute:[seq] of Element:[field] is undefined.");
+				}
+			}
+		}
+
+	}
+
+	private static void chooseTitleFormat(String titlesRefFormat, ExportTitle title, Element eleTitle) throws Exception {
+		chooseColumnFormat(titlesRefFormat, title, eleTitle);
+	}
+
+	private static void chooseFieldFormat(String fieldRefFormat, ExportField field, Element eleField) throws Exception {
+		chooseColumnFormat(fieldRefFormat, field, eleField);
+	}
+
+	private static void chooseColumnFormat(String refFormat, AbstractExportColumn column, Element eleColumn)
+			throws Exception {
+		if (StringUtils.isNotEmpty(refFormat)) {
+			ExportFormat format = hmFormat.get(refFormat);
+			if (format != null) {
+				column.setFormat(format);
+			} else {
+				throw new Exception("Configuration Error::Cannot find the refered format for Attribute:[ref]:"
+						+ refFormat);
+			}
+		} else {
+			Element eleFormat = XMLUtil.findChildNode(Const.Node.FORMAT, eleColumn);
+			String ref = XMLUtil.getNodeAttribute(eleFormat, Const.Attr.REFERENCE);
+			if (StringUtils.isNotBlank(ref)) {
+				ExportFormat format = hmFormat.get(ref);
+				if (format != null) {
+					column.setFormat(format);
+				} else {
+					throw new Exception("Configuration Error::Cannot find the refered format for Attribute:[ref]:"
+							+ refFormat);
+				}
+			} else {
+				column.setFormat(initFormat(eleFormat));
+			}
+		}
 	}
 
 	private static void initTitles(ExportBean bean, Element eleBean) throws Exception {
@@ -102,40 +155,6 @@ public class ExportExcelConfig {
 		}
 	}
 
-	private static void chooseTitleFormat(String titlesRefFormat, ExportTitle title, Element eleTitle) throws Exception {
-		if (StringUtils.isNotEmpty(titlesRefFormat)) {
-			ExportFormat format = hmFormat.get(titlesRefFormat);
-			if (format != null) {
-				title.setFormat(format);
-			} else {
-				throw new Exception("Configuration Error::Cannot find the refred format for Attribute:[ref]:"
-						+ titlesRefFormat);
-			}
-		} else {
-			Element eleFormat = XMLUtil.findChildNode(Const.Node.FORMAT, eleTitle);
-			String ref = XMLUtil.getNodeAttribute(eleFormat, Const.Attr.REFERENCE);
-			if (StringUtils.isNotBlank(ref)) {
-				ExportFormat format = hmFormat.get(ref);
-				if (format != null) {
-					title.setFormat(format);
-				} else {
-					throw new Exception("Configuration Error::Cannot find the refred format for Attribute:[ref]:"
-							+ titlesRefFormat);
-				}
-			} else {
-				title.setFormat(initFormat(eleFormat));
-			}
-		}
-
-	}
-
-	private static void validation(String beanId, String total, String className) throws Exception {
-		if (StringUtils.isBlank(beanId) || StringUtils.isBlank(className) || StringUtils.isBlank(total)) {
-			throw new Exception(
-					"Configuration Error::Attribute:[id][class][totalCols] of Element:[bean] cannot be empty.");
-		}
-	}
-
 	/**
 	 * loop the [formats] element inside the configure file and put into
 	 * hmFormat
@@ -153,7 +172,38 @@ public class ExportExcelConfig {
 	}
 
 	private static ExportFormat initFormat(Element eleFormat) {
-		// TODO Auto-generated method stub
-		return null;
+		ExportFormat format = new ExportFormat();
+		String formatId = XMLUtil.getNodeAttribute(eleFormat, Const.Attr.ID);
+		format.setFormatId(formatId);
+		format.setAlign(XMLUtil.getChildNodeValue(eleFormat, Const.Node.ALIGN, true));
+		format.setBackColor(XMLUtil.getChildNodeValue(eleFormat, Const.Node.BACKGROUND_COLOR, true));
+		format.setDateFormat(XMLUtil.getChildNodeValue(eleFormat, Const.Node.DATE_FORMAT, true));
+		format.setDataFormat(XMLUtil.getChildNodeValue(eleFormat, Const.Node.DATA_FORMAT, true));
+		format.setFontName(XMLUtil.getChildNodeValue(eleFormat, Const.Node.FONT_NAME, true));
+		format.setFontColor(XMLUtil.getChildNodeValue(eleFormat, Const.Node.FONT_COLOR, true));
+		format.setHeight(XMLUtil.getChildNodeValue(eleFormat, Const.Node.HEIGHT, true));
+		format.setWidth(XMLUtil.getChildNodeValue(eleFormat, Const.Node.WIDTH, true));
+		String fontSize = XMLUtil.getChildNodeValue(eleFormat, Const.Node.FONT_SIZE, true);
+		if (StringUtils.isNotBlank(fontSize)) {
+			format.setFontSize(Integer.parseInt(fontSize));
+		}
+		format.setVertical(XMLUtil.getChildNodeValue(eleFormat, Const.Node.VERTICAL_ALIGN, true));
+		String bold = XMLUtil.getChildNodeValue(eleFormat, Const.Node.BLOD, true);
+		if (StringUtils.isNotBlank(bold)) {
+			format.setBlod(Boolean.valueOf(bold));
+		}
+		String wrap = XMLUtil.getChildNodeValue(eleFormat, Const.Node.WRAP, true);
+		if (StringUtils.isNotBlank(wrap)) {
+			format.setNeedWrap(Boolean.valueOf(wrap));
+		}
+		hmFormat.put(formatId, format);
+		return format;
+	}
+
+	private static void validation(String beanId, String total, String className) throws Exception {
+		if (StringUtils.isBlank(beanId) || StringUtils.isBlank(className) || StringUtils.isBlank(total)) {
+			throw new Exception(
+					"Configuration Error::Attribute:[id][class][totalCols] of Element:[bean] cannot be empty.");
+		}
 	}
 }
