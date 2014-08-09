@@ -129,6 +129,26 @@ This tool depends on below jar file(you can also find inside pom.xml):
 ```
 - The import configure file show like below:
 ```
+<?xml version="1.0" encoding="UTF-8"?>
+<import-config>
+	<!-- startRow starts with 0, totalCols is how many columns will be parsed -->
+	<bean id="demo" startRow="1" totalCols="4">
+		<field seq="0" name="User Name">
+			<rule id="1" desc="shall be mandatory field"></rule>
+			<rule id="2" desc="max length check">20</rule>
+		</field>
+		<field seq="1" name="Age">
+			<rule id="1"></rule>
+			<rule id="2">2</rule>
+		</field>
+		<field seq="2" name="Birthday">
+			<rule id="4" desc="shall be date column">dd/MM/yyyy</rule>
+		</field>
+		<field seq="3" name="Balance">
+			<rule id="3" desc="shall be amount column">#,##0.00</rule>
+		</field>
+	</bean>
+</import-config>
 ```
 - How to share local project to GitHub
 ```
