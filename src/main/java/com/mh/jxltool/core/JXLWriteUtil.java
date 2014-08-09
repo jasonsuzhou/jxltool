@@ -74,7 +74,7 @@ public class JXLWriteUtil<T> implements ExcelWriteUtil<T> {
 				obj = method.invoke(list.get(i));
 				if (obj == null && sheet != null) {
 					sheet.addCell(new Label(j, i + 1, "", fields.get(j).getCellFormat()));
-				} else {
+				} else if (sheet != null) {
 					if(Const.ReturnType.DATE.equals(returnType)) {
 						sheet.addCell(new DateTime(j, i + 1, (Date)obj, fields.get(j).getCellFormat()));
 					} else if (Const.ReturnType.INT.equals(returnType) || Const.ReturnType.BIG_DECIMAL.equals(returnType)
