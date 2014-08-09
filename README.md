@@ -1,12 +1,4 @@
-          _     _____________   
-         | |   |_____________| 
-         | |         | |
-         | |         | |
-         | |         | |
-         | |         | |
-         / |         | |                                                   
-    ____/ /          | |
-    \____/           |_|
+JXLTool
 
 ---
 - Summary
@@ -35,7 +27,29 @@ This tool depends on below jar file(you can also find inside pom.xml):
 		}
 	}
 ```
-- The export config file show like below:
+- Import sample code
+```
+@Test
+	public void getExcelData() {
+		String configFilePath = "./src/test/resources/importConfig-test.xml";
+		String testImportFilePath = "/Users/jasonyao/git/jxltool/test.xls";
+		try {
+			ImportExcelConfig.initConfig(new File(configFilePath));
+			InputStream inputStream = new FileInputStream(new File(testImportFilePath));
+			ExcelReadUtil util = new JXLReadUtil(inputStream, ImportExcelConfig.getImportBean("demo"));
+			String validationResult = util.getValidationResult();
+			if (StringUtils.isNotBlank(validationResult)) {
+				// objs contains all the data inside excel
+				List<Object[]> objs = util.getFirstSheetRowValues();
+			} else {
+				System.out.println(validationResult);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+```
+- The export configure file show like below:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <export-config>
@@ -112,6 +126,9 @@ This tool depends on below jar file(you can also find inside pom.xml):
 		</format>
 	</formats>
 </export-config>
+```
+- The import configure file show like below:
+```
 ```
 - How to share local project to GitHub
 ```

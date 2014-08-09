@@ -14,7 +14,7 @@
 			<rule id="4" desc="shall be date column">dd/MM/yyyy</rule>
 		</field>
 		<field seq="3" name="Balance">
-			<rule id="6" desc="shall be amount column">##.####.00</rule>
+			<rule id="3" desc="shall be amount column">#,##0.00</rule>
 		</field>
 	</bean>
 </import-config>

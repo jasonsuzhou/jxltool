@@ -52,5 +52,15 @@ public class Const {
 		public static final String LONG = "long";
 		public static final String STRING = "java.lang.String";
 	}
+	
+	public interface Rule {
+		public static final int MANDATORY = 1;
+		public static final int MAX_LENGTH = 2;
+		public static final int AMOUNT = 3;
+		public static final int DATE = 4;
+		public static final int NUMBER = 5;
+		public static final int FIX_LENGTH = 6;
+		public static final int BOOLEAN = 7;
+	}
 
 }

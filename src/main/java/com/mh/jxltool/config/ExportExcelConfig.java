@@ -17,6 +17,7 @@ import com.mh.jxltool.bean.ExportField;
 import com.mh.jxltool.bean.ExportFormat;
 import com.mh.jxltool.bean.ExportTitle;
 import com.mh.jxltool.constant.Const;
+import com.mh.jxltool.util.Assert;
 import com.mh.jxltool.util.XMLUtil;
 
 public class ExportExcelConfig {
@@ -82,7 +83,7 @@ public class ExportExcelConfig {
 					chooseFieldFormat(fieldRefFormat, field, eleField);
 					bean.putExportField(iseq, field);
 				} else {
-					throw new Exception("Configuration Error::Attribute:[seq] of Element:[field] is undefined.");
+					throw new Exception(Assert.UNDEFINED_SEQ);
 				}
 			}
 		}

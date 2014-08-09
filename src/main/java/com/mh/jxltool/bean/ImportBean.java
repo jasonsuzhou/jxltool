@@ -60,4 +60,8 @@ public class ImportBean {
 		this.hmField.put(seq, field);
 	}
 
+	public ImportField getImportField(int seq) {
+		return this.hmField.get(seq);
+	}
+
 }
