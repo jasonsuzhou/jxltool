@@ -28,7 +28,7 @@ public class JXLReadUtil implements ExcelReadUtil {
 	private InputStream inputStream = null;
 	private ImportBean bean = null;
 	private Map<Integer, Sheet> hmSheet = new HashMap<Integer, Sheet>();
-	private StringBuilder validationResult = new StringBuilder("1024");
+	private StringBuilder validationResult = new StringBuilder(1024);
 
 	public JXLReadUtil(InputStream inputStream, ImportBean bean) {
 		this.inputStream = inputStream;
