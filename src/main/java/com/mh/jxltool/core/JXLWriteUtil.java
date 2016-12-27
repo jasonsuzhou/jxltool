@@ -53,6 +53,7 @@ public class JXLWriteUtil<T> implements ExcelWriteUtil<T> {
 			for (int i = 0; i < len; i++) {
 				title = titles.get(i);
 				format = title.getCellFormat();
+				sheet.setColumnView(i, title.getColumnWidth());
 				sheet.addCell(new Label(i, 0, title.getName(), format));
 			}
 		}
